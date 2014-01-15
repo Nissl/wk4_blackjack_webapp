@@ -46,6 +46,16 @@ helpers do
   def card_route(card)
     "/images/cards/#{card[1].downcase}_#{card[0].downcase}.jpg"
   end
+
+  def user_wins
+    session[:user_money] += session[:user_bet]
+    @user_wins = true
+  end
+
+  def user_loses
+    session[:user_money] -= session[:user_bet]
+    @user_loses = true
+  end
 end
 
 get '/' do
@@ -100,6 +110,9 @@ post '/set_bet' do
   if params[:bet].empty?
     @error = "You must bet to play!"
     halt erb(:get_bet)
+  elsif params[:bet].to_i == 0
+    @error = "No bet input"
+    halt erb(:get_bet)
   elsif params[:bet].to_i > session[:user_money]
     halt erb(:bad_bet)
   else
@@ -113,43 +126,37 @@ get '/game' do
   #Check for blackjacks - specialized conditions not implemented yet.
   if (score(session[:user_cards]) == Constants::MAX_SCORE && 
       session[:user_cards].length == 2)
+    @blackjack = true
     if score(session[:dealer_cards]) == Constants::MAX_SCORE
-      @blackjack = true
       @game_draw = true
     else
-      @blackjack = true
       @user_wins = true
       session[:user_money] += session[:user_bet] * 3 / 2
     end
   elsif (score(session[:dealer_cards]) == Constants::MAX_SCORE && 
     session[:dealer_cards].length == 2)
+    user_loses
     @blackjack = true
-    @user_loses = true
-    session[:user_money] -= session[:user_bet]
   end
 
   # If the user busted, show results
   if score(session[:user_cards]) > Constants::MAX_SCORE
+    user_loses
     @user_busts = true
-    @user_loses = true
-    session[:user_money] -= session[:user_bet]
   end
 
   # If we've already finished the game, show results
   if (score(session[:dealer_cards]) >= Constants::DEALER_CUTOFF && 
       session[:dealer_finished])
     if score(session[:dealer_cards]) > Constants::MAX_SCORE
+      user_wins
       @dealer_busts = true
-      @user_wins = true
-      session[:user_money] += session[:user_bet]
     elsif score(session[:dealer_cards]) < score(session[:user_cards])
-      @user_wins = true
-      session[:user_money] += session[:user_bet]
+      user_wins
     elsif score(session[:dealer_cards]) == score(session[:user_cards])
       @game_draw = true
     else
-      @user_loses = true
-      session[:user_money] -= session[:user_bet]
+      user_loses
     end
   end
 
@@ -164,12 +171,11 @@ end
 post '/stay' do
   if score(session[:dealer_cards]) < Constants::DEALER_CUTOFF
     session[:dealer_hitting] = true 
-    erb :game
   else
     session[:dealer_hitting] = false
     session[:dealer_finished] = true
-    redirect '/game'
   end
+  redirect '/game'
 end
 
 post '/dealer_hit' do

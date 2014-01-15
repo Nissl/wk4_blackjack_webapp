@@ -51,6 +51,10 @@ li {
 	margin-bottom: 0px;
 }
 
+.table_surface .btn.btn-primary {
+	margin-top: 5px;
+}
+
 .alert {
 	margin: 10px;
 }
