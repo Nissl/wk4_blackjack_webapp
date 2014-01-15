@@ -37,8 +37,7 @@ helpers do
     deck = []
     values = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace)
     suits = %w(Clubs Diamonds Hearts Spades)
-    deck = values.product(suits)
-    session[:deck] = deck.shuffle!
+    session[:deck] = values.product(suits).shuffle!
     session[:user_cards] = [session[:deck].pop]
     session[:dealer_cards] = [session[:deck].pop]
     session[:user_cards] << session[:deck].pop
@@ -46,17 +45,19 @@ helpers do
     session[:dealer_hitting] = false
     session[:dealer_finished] = false
   end
-
-  def reset_game
-    session[:user_name] = nil
-    session[:user_money] = nil
-    session[:user_bet] = nil
-  end
 end
 
 get '/' do
-  reset_game
-  redirect '/get_name'
+  if session[:user_name]
+    redirect '/get_money'
+  else
+    redirect '/get_name'
+  end
+end
+
+get '/change_player' do
+  session.clear
+  redirect '/'
 end
 
 get '/get_name' do
@@ -78,16 +79,20 @@ post '/set_money' do
 end
 
 get '/get_bet' do
-  if !session[:user_money]
-    redirect '/get_stakes'
+  unless session[:user_money]
+    redirect '/get_money'
   end
-  setup_game
   erb :get_bet
 end
 
 post '/set_bet' do
-  session[:user_bet] = params[:bet].to_i
-  redirect '/game'
+  if params[:bet].to_i > session[:user_money]
+    erb :bad_bet
+  else
+    session[:user_bet] = params[:bet].to_i
+    setup_game
+    redirect '/game'
+  end
 end
 
 get '/game' do

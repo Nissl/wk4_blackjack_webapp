@@ -1,6 +1,7 @@
-<h3>Thanks for playing!</h3>
-<h4>You walk off into the sunset with $<%= session[:user_money] %>.</h4>
-<h4>Click here to play again:</h4>
-    <form action='/' method='get'>
-      <button class="btn btn-primary" type="submit">Play Again</button>
+<div class="table_surface">
+  <h3>Thanks for playing!</h3>
+  <h4>You walk off into the sunset with $<%= session[:user_money] %>.</h4>
+    <form action='/change_player' method='get'>
+      Click here to play again: <button class="btn btn-primary" type="submit">Play Again</button>
     </form>
+</div>

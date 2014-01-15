@@ -1,0 +1,7 @@
+<div class="table_surface">
+  <h3><%= session[:user_name] %>, you only have $<%= session[:user_money] %> on the table. You can't bet more than that!</h3>
+  <form action='/set_bet' method='post'>
+    New bet: <input type='text' class="input-medium search-query" name="bet"/>
+    <button type='submit' class='btn btn-danger'/>Sorry!</button>
+  </form>
+</div>
