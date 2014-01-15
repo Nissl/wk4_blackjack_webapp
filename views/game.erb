@@ -17,7 +17,7 @@
 
   <%if session[:dealer_hitting] == true %>
     <form action='/dealer_hit' method='post'>
-      <button class="btn btn-primary" type="submit">Hit button to draw next dealer card</button>
+      <button class="btn btn-info" type="submit">Hit button to draw next dealer card</button>
     </form>
   <% end %>
 </div>
@@ -27,8 +27,7 @@
   <% session[:user_cards].each do |card| %>
     <img src=<%= card_route(card) %> class="card_image"/>
   <% end %>
-  <h4 class="score">Score = <%= score(session[:user_cards])%></h4>
-  <h4 class="bet">Current bet: $<%= session[:user_bet] %></h4>
+  <h4 class="score">Score = <%= score(session[:user_cards])%>, Current bet: $<%= session[:user_bet] %></h4>
 </div>
 
 <%unless @user_wins || @user_loses || @game_draw || session[:dealer_hitting]%>

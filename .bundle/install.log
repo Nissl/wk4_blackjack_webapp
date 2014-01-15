@@ -1,0 +1,13 @@
+# Logfile created on 2014-01-15 13:57:04 -0800 by logger.rb/41954
+I, [2014-01-15T13:57:04.513780 #19524]  INFO -- : 0:  coderay (1.0.9) from /Users/johnmorgan/.rbenv/versions/2.0.0-p353/lib/ruby/gems/2.0.0/specifications/coderay-1.0.9.gemspec
+I, [2014-01-15T13:57:04.515839 #19524]  INFO -- : 0:  daemons (1.1.9) from /Users/johnmorgan/.rbenv/versions/2.0.0-p353/lib/ruby/gems/2.0.0/specifications/daemons-1.1.9.gemspec
+I, [2014-01-15T13:57:16.459574 #19524]  INFO -- : 0:  eventmachine (1.0.0) from /Users/johnmorgan/.rbenv/versions/2.0.0-p353/lib/ruby/gems/2.0.0/specifications/eventmachine-1.0.0.gemspec
+I, [2014-01-15T13:57:18.256695 #19524]  INFO -- : 0:  method_source (0.8.1) from /Users/johnmorgan/.rbenv/versions/2.0.0-p353/lib/ruby/gems/2.0.0/specifications/method_source-0.8.1.gemspec
+I, [2014-01-15T13:57:19.669839 #19524]  INFO -- : 0:  slop (3.4.4) from /Users/johnmorgan/.rbenv/versions/2.0.0-p353/lib/ruby/gems/2.0.0/specifications/slop-3.4.4.gemspec
+I, [2014-01-15T13:57:21.629265 #19524]  INFO -- : 0:  pry (0.9.12.1) from /Users/johnmorgan/.rbenv/versions/2.0.0-p353/lib/ruby/gems/2.0.0/specifications/pry-0.9.12.1.gemspec
+I, [2014-01-15T13:57:21.629824 #19524]  INFO -- : 0:  rack (1.5.2) from /Users/johnmorgan/.rbenv/versions/2.0.0-p353/lib/ruby/gems/2.0.0/specifications/rack-1.5.2.gemspec
+I, [2014-01-15T13:57:23.154890 #19524]  INFO -- : 0:  rack-protection (1.3.2) from /Users/johnmorgan/.rbenv/versions/2.0.0-p353/lib/ruby/gems/2.0.0/specifications/rack-protection-1.3.2.gemspec
+I, [2014-01-15T13:57:24.924663 #19524]  INFO -- : 0:  tilt (1.3.3) from /Users/johnmorgan/.rbenv/versions/2.0.0-p353/lib/ruby/gems/2.0.0/specifications/tilt-1.3.3.gemspec
+I, [2014-01-15T13:57:27.537562 #19524]  INFO -- : 0:  sinatra (1.3.4) from /Users/johnmorgan/.rbenv/versions/2.0.0-p353/lib/ruby/gems/2.0.0/specifications/sinatra-1.3.4.gemspec
+I, [2014-01-15T13:57:29.403971 #19524]  INFO -- : 0:  thin (1.5.0) from /Users/johnmorgan/.rbenv/versions/2.0.0-p353/lib/ruby/gems/2.0.0/specifications/thin-1.5.0.gemspec
+I, [2014-01-15T13:57:29.404810 #19524]  INFO -- : 0:  bundler (1.5.1) from /Users/johnmorgan/.rbenv/versions/2.0.0-p353/lib/ruby/gems/2.0.0/specifications/bundler-1.5.1.gemspec
