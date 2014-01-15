@@ -1,0 +1,6 @@
+<h4><%= session[:user_name] %>, you have $<%= session[:user_money] %> on the table.</h4>
+<h4>How much of that would you like to bet on the next hand?</h4>
+<form action='/set_bet' method='post'>
+  Bet: <input type='text' class="input-medium search-query" name="bet"/>
+  <button type='submit' class='btn btn-primary'/>Bet</button>
+</form>

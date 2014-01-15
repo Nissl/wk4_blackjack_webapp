@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>My First App</title>
+    <title>John Morgan's Basic Blackjack App</title>
     <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/application.css">
   </head>
-  <body style="padding-top: 50px;">
+  <body style="padding-top: 50px; background-color: #006600">
 
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
             <ul class="nav">
-              <li><a href="/">Nav Item</a></li>
+              <li><a href="/">New Game</a></li>
+              <li><a href="/get_bet">New Deal</a></li>
             </ul>
         </div>
       </div>
     </div>
 
   <div class="container">
+    <%= yield %>
     <%if @error %>
-      <div class="alert alert-error"><%=@error%></div>
+      <div class="alert alert-error"><%= @error%></div>
     <% end %>
-      <%= yield %>
   </div>
   </body>
 </html>

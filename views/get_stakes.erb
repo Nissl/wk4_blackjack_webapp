@@ -1,0 +1,5 @@
+<h4>How much will you be gambling today, <%= session[:user_name]%>?</h4>
+<form action='/set_stakes' method='post'>
+  <input type='text' class="input-medium search-query" name="stake"/>
+  <button type='submit' class='btn btn-primary'/>Buy In</button>
+</form>
