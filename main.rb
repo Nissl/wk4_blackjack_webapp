@@ -11,8 +11,18 @@ end
 
 helpers do
   include Constants
-  def card_route(card)
-    "/images/cards/#{card[1].downcase}_#{card[0].downcase}.jpg"
+
+  def setup_game
+    deck = []
+    values = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace)
+    suits = %w(Clubs Diamonds Hearts Spades)
+    session[:deck] = values.product(suits).shuffle!
+    session[:user_cards] = [session[:deck].pop]
+    session[:dealer_cards] = [session[:deck].pop]
+    session[:user_cards] << session[:deck].pop
+    session[:dealer_cards] << session[:deck].pop
+    session[:dealer_hitting] = false
+    session[:dealer_finished] = false
   end
 
   def score(hand)
@@ -33,17 +43,8 @@ helpers do
     total
   end
 
-  def setup_game
-    deck = []
-    values = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace)
-    suits = %w(Clubs Diamonds Hearts Spades)
-    session[:deck] = values.product(suits).shuffle!
-    session[:user_cards] = [session[:deck].pop]
-    session[:dealer_cards] = [session[:deck].pop]
-    session[:user_cards] << session[:deck].pop
-    session[:dealer_cards] << session[:deck].pop
-    session[:dealer_hitting] = false
-    session[:dealer_finished] = false
+  def card_route(card)
+    "/images/cards/#{card[1].downcase}_#{card[0].downcase}.jpg"
   end
 end
 
@@ -65,8 +66,13 @@ get '/get_name' do
 end
 
 post '/set_name' do
-  session[:user_name] = params[:user_name]
-  redirect '/get_money'
+  if params[:user_name].empty?
+    @error = "You need to enter a name!"
+    halt erb(:get_name)
+  else
+    session[:user_name] = params[:user_name]
+    redirect '/get_money'
+  end
 end
 
 get '/get_money' do
@@ -74,8 +80,13 @@ get '/get_money' do
 end
 
 post '/set_money' do
-  session[:user_money] = params[:money].to_i
-  redirect '/get_bet'
+  unless params[:money].to_i > 0
+      @error = "You must buy in to play!"
+      erb(:get_money)
+  else
+    session[:user_money] = params[:money].to_i
+    redirect '/get_bet'
+  end
 end
 
 get '/get_bet' do
@@ -86,8 +97,11 @@ get '/get_bet' do
 end
 
 post '/set_bet' do
-  if params[:bet].to_i > session[:user_money]
-    erb :bad_bet
+  if params[:bet].empty?
+    @error = "You must bet to play!"
+    halt erb(:get_bet)
+  elsif params[:bet].to_i > session[:user_money]
+    halt erb(:bad_bet)
   else
     session[:user_bet] = params[:bet].to_i
     setup_game
@@ -138,6 +152,7 @@ get '/game' do
       session[:user_money] -= session[:user_bet]
     end
   end
+
   erb :game
 end
 

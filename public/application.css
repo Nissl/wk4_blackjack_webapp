@@ -1,7 +1,6 @@
 h3 {
 	color: #181818;
 	margin-top: 0px;
-	margin-bottom: 0px;
 }
 
 div h4 {
@@ -23,6 +22,10 @@ li {
 	padding: 10px;
 	margin: 10px;
 	border-radius: 5px;
+}
+
+.card_image {
+	margin-right: 5px;
 }
 
 .button_surface {
