@@ -139,7 +139,7 @@ post '/set_bet' do
 end
 
 get '/game' do
-  #Check for blackjacks - specialized conditions not implemented yet.
+  #Check for blackjacks
   if (score(session[:user_cards]) == Constants::MAX_SCORE && 
       session[:user_cards].length == 2)
     @blackjack = true
