@@ -139,33 +139,19 @@ get '/game' do
     @blackjack = true
   end
 
-  # If the user busted, show results
-  if score(session[:user_cards]) > Constants::MAX_SCORE
-    user_loses
-    @user_busts = true
-  end
-
-  # If we've already finished the game, show results
-  if (score(session[:dealer_cards]) >= Constants::DEALER_CUTOFF && 
-      session[:dealer_finished])
-    if score(session[:dealer_cards]) > Constants::MAX_SCORE
-      user_wins
-      @dealer_busts = true
-    elsif score(session[:dealer_cards]) < score(session[:user_cards])
-      user_wins
-    elsif score(session[:dealer_cards]) == score(session[:user_cards])
-      @game_draw = true
-    else
-      user_loses
-    end
-  end
-
   erb :game
 end
 
 post '/hit' do
   session[:user_cards] << session[:deck].pop
-  redirect '/game'
+
+   # If the user busted, show results
+  if score(session[:user_cards]) > Constants::MAX_SCORE
+    user_loses
+    @user_busts = true
+  end
+  
+  erb :game, layout: false
 end
 
 post '/stay' do
@@ -174,8 +160,23 @@ post '/stay' do
   else
     session[:dealer_hitting] = false
     session[:dealer_finished] = true
+
+    if (score(session[:dealer_cards]) >= Constants::DEALER_CUTOFF && 
+        session[:dealer_finished])
+      if score(session[:dealer_cards]) > Constants::MAX_SCORE
+        user_wins
+        @dealer_busts = true
+      elsif score(session[:dealer_cards]) < score(session[:user_cards])
+        user_wins
+      elsif score(session[:dealer_cards]) == score(session[:user_cards])
+        @game_draw = true
+      else
+        user_loses
+      end
+    end
   end
-  redirect '/game'
+
+  erb :game, layout: false
 end
 
 post '/dealer_hit' do
