@@ -1,21 +1,21 @@
 <div class="table_surface">
 <h4>Dealer's cards:</h4>
-  <%if @user_wins || @user_loses || @game_draw || session[:dealer_hitting]%>
+  <% if @user_wins || @user_loses || @game_draw || session[:dealer_hitting] %>
     <% session[:dealer_cards].each do |card| %>
       <img src=<%= card_route(card) %> class="card_image"/>
     <% end %>
     <h4 class="score">Score = <%= score(session[:dealer_cards])%></h4>
-  <%else %>
+  <% else %>
     <% session[:dealer_cards].each_with_index do |card, i|%>
-      <%if i == 0 %>
+      <% if i == 0 %>
         <img src="/images/cards/cover.jpg" class="card_image"/>
-      <%else %>
+      <% else %>
         <img src=<%= card_route(card) %> class="card_image"/> 
       <% end %>
     <% end %>
   <% end %>
 
-  <%if session[:dealer_hitting] == true %>
+  <% if session[:dealer_hitting] == true %>
     <form action='/dealer_hit' method='post'>
       <button class="btn btn-info" type="submit">Hit button to draw next dealer card</button>
     </form>
@@ -30,7 +30,7 @@
   <h4 class="score">Score = <%= score(session[:user_cards])%>, Current bet: $<%= session[:user_bet] %></h4>
 </div>
 
-<%unless @user_wins || @user_loses || @game_draw || session[:dealer_hitting]%>
+<% unless @user_wins || @user_loses || @game_draw || session[:dealer_hitting] %>
   <div class = "button_surface">
       <p>What would you like to do, <%= session[:user_name]%>?</p>
     <form action='/hit' method='post'>
@@ -42,7 +42,7 @@
   </div>
 <% end %>
 
-<%if @user_loses %>
+<% if @user_loses %>
   <div class="alert alert-error">
     <% if @user_busts %>
       Game over! You busted, <%= session[:user_name] %>! You bet $<%= session[:user_bet] %> on this hand and now you have $<%= session[:user_money] %> left.
@@ -54,7 +54,7 @@
   </div>
 <% end %>
 
-<%if @user_wins %>
+<% if @user_wins %>
   <div class="alert alert-success">
     <% if @dealer_busts %>
       Game over! The dealer busted! You win, <%= session[:user_name] %>! You bet $<%= session[:user_bet] %> on this hand, and you now have $<%= session[:user_money] %>.
@@ -66,7 +66,7 @@
   </div>
 <% end %>
 
-<%if @game_draw %>
+<% if @game_draw %>
   <div class="alert alert-warning">
     <% if @blackjack %>
       Game over! You both got blackjack, amazingly! It's a draw! <%= session[:user_name] %>, you still have $<%= session[:user_money] %>.
@@ -76,9 +76,9 @@
   </div>
 <% end %>
 
-<%if @user_wins || @user_loses || @game_draw%>
+<% if @user_wins || @user_loses || @game_draw %>
   <div class = "button_surface">
-    <%if session[:user_money] > 0 %>
+    <% if session[:user_money] > 0 %>
       <p>Would you like to play again, <%= session[:user_name]%>?</p>
       <form action='/set_bet' method='post'>
          Bet: <input type='text' class="input-medium search-query" name="bet"/>
@@ -87,7 +87,7 @@
       <form action='/quit' method='post'>
         <button class="btn btn-danger" type="submit">No</button>
       </form> 
-    <%else %>
+    <% else %>
       <p>You're all out of money! Click here to add more.</p> 
       <form action='/get_money' method='get'>
         <button class="btn btn-danger" type="submit">Buy In Again</button>
