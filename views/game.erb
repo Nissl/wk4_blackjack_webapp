@@ -40,7 +40,7 @@
       <form id="stay_form" action='/stay' method='post'>
         <button class="btn btn-warning" type="submit">Stay</button>
       </form>
-      <% if session[:doubled_down] == false %> 
+      <% if session[:user_cards].length == 2 %> 
         <form id="double_down" action='/double_down' method='post'>
           <button class="btn btn-info" type="submit">Double Down</button>
         </form>   

@@ -22,7 +22,6 @@ helpers do
     session[:user_cards] << session[:deck].pop
     session[:dealer_cards] << session[:deck].pop
     session[:dealer_hitting] = false
-    session[:doubled_down] = false
   end
 
   def score(hand)
@@ -185,7 +184,7 @@ end
 post '/dealer_hit' do
   session[:dealer_cards] << session[:deck].pop
 
-  if score(session[:dealer_cards]) > Constants::DEALER_CUTOFF
+  if score(session[:dealer_cards]) >= Constants::DEALER_CUTOFF
     session[:dealer_hitting] = false
     resolve_game
   end
@@ -195,7 +194,10 @@ end
 
 post '/double_down' do
   session[:user_bet] = session[:user_bet] * 2
-  session[:doubled_down] = true
+
+  # You draw one and only one card after doubling down!
+  session[:user_cards] << session[:deck].pop
+  session[:dealer_hitting] = true 
 
   erb :game, layout: false
 end
