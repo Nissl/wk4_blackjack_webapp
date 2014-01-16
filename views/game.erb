@@ -17,7 +17,7 @@
     <% end %>
 
     <% if session[:dealer_hitting] == true %>
-      <form action='/dealer_hit' method='post'>
+      <form id="dealer_hit" action='/dealer_hit' method='post'>
         <button class="btn btn-info" type="submit">Hit button to draw next dealer card</button>
       </form>
     <% end %>
@@ -39,7 +39,12 @@
       </form>
       <form id="stay_form" action='/stay' method='post'>
         <button class="btn btn-warning" type="submit">Stay</button>
-      </form>    
+      </form>
+      <% if session[:doubled_down] == false %> 
+        <form id="double_down" action='/double_down' method='post'>
+          <button class="btn btn-info" type="submit">Double Down</button>
+        </form>   
+      <% end %> 
     </div>
   <% end %>
 

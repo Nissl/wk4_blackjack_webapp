@@ -22,7 +22,7 @@ helpers do
     session[:user_cards] << session[:deck].pop
     session[:dealer_cards] << session[:deck].pop
     session[:dealer_hitting] = false
-    session[:dealer_finished] = false
+    session[:doubled_down] = false
   end
 
   def score(hand)
@@ -55,6 +55,23 @@ helpers do
   def user_loses
     session[:user_money] -= session[:user_bet]
     @user_loses = true
+  end
+
+  def user_draws
+    @game_draw = true
+  end
+
+  def resolve_game
+    if score(session[:dealer_cards]) > Constants::MAX_SCORE
+      user_wins
+      @dealer_busts = true
+    elsif score(session[:dealer_cards]) < score(session[:user_cards])
+      user_wins
+    elsif score(session[:dealer_cards]) == score(session[:user_cards])
+      user_draws
+    else
+      user_loses
+    end
   end
 end
 
@@ -128,10 +145,11 @@ get '/game' do
       session[:user_cards].length == 2)
     @blackjack = true
     if score(session[:dealer_cards]) == Constants::MAX_SCORE
-      @game_draw = true
+      user_draws
     else
-      @user_wins = true
-      session[:user_money] += session[:user_bet] * 3 / 2
+      user_wins
+      # Pay out blackjack win 3 / 2 by adding extra 1 / 2
+      session[:user_money] += session[:user_bet] / 2
     end
   elsif (score(session[:dealer_cards]) == Constants::MAX_SCORE && 
     session[:dealer_cards].length == 2)
@@ -158,22 +176,7 @@ post '/stay' do
   if score(session[:dealer_cards]) < Constants::DEALER_CUTOFF
     session[:dealer_hitting] = true 
   else
-    session[:dealer_hitting] = false
-    session[:dealer_finished] = true
-
-    if (score(session[:dealer_cards]) >= Constants::DEALER_CUTOFF && 
-        session[:dealer_finished])
-      if score(session[:dealer_cards]) > Constants::MAX_SCORE
-        user_wins
-        @dealer_busts = true
-      elsif score(session[:dealer_cards]) < score(session[:user_cards])
-        user_wins
-      elsif score(session[:dealer_cards]) == score(session[:user_cards])
-        @game_draw = true
-      else
-        user_loses
-      end
-    end
+    resolve_game
   end
 
   erb :game, layout: false
@@ -181,13 +184,20 @@ end
 
 post '/dealer_hit' do
   session[:dealer_cards] << session[:deck].pop
-  if score(session[:dealer_cards]) < Constants::DEALER_CUTOFF
-    erb :game
-  else
+
+  if score(session[:dealer_cards]) > Constants::DEALER_CUTOFF
     session[:dealer_hitting] = false
-    session[:dealer_finished] = true
-    redirect '/game'
+    resolve_game
   end
+
+  erb :game, layout: false
+end
+
+post '/double_down' do
+  session[:user_bet] = session[:user_bet] * 2
+  session[:doubled_down] = true
+
+  erb :game, layout: false
 end
 
 post '/quit' do
